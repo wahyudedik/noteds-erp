@@ -83,7 +83,7 @@ class TaskUtility extends Model
             {
                 foreach($client_permissions as $permission_c){
                     $permission = Permission::where('name',$permission_c)->first();
-                    if(!$role->hasPermission($permission_c))
+                    if($permission && !$role->hasPermission($permission_c))
                     {
                         $role->givePermission($permission);
                     }
@@ -97,7 +97,7 @@ class TaskUtility extends Model
             {
                 foreach($staff_permissions as $permission_s){
                     $permission = Permission::where('name',$permission_s)->first();
-                    if(!$role->hasPermission($permission_s))
+                    if($permission && !$role->hasPermission($permission_s))
                     {
                         $role->givePermission($permission);
                     }
@@ -112,7 +112,7 @@ class TaskUtility extends Model
                 $roles_c = Role::where('name','client')->where('id',$role_id)->first();
                 foreach($client_permissions as $permission_c){
                     $permission = Permission::where('name',$permission_c)->first();
-                    if(!$roles_c->hasPermission($permission_c))
+                    if($permission && !$roles_c->hasPermission($permission_c))
                     {
                         $roles_c->givePermission($permission);
                     }
@@ -123,7 +123,7 @@ class TaskUtility extends Model
                 $roles_s = Role::where('name','staff')->where('id',$role_id)->first();
                 foreach($staff_permissions as $permission_s){
                     $permission = Permission::where('name',$permission_s)->first();
-                    if(!$roles_s->hasPermission($permission_s))
+                    if($permission && !$roles_s->hasPermission($permission_s))
                     {
                         $roles_s->givePermission($permission);
                     }

@@ -284,7 +284,7 @@ class Pos extends Model
                 $roles_v = Role::where('name','client')->where('id',$role_id)->first();
                 foreach($client_permissions as $permission_v){
                     $permission = Permission::where('name',$permission_v)->first();
-                    if(!$roles_v->hasPermission($permission_v))
+                    if($permission && !$roles_v->hasPermission($permission_v))
                     {
                         $roles_v->givePermission($permission);
                     }
