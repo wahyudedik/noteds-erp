@@ -19,7 +19,7 @@ class PermissionTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
+    { 
         Artisan::call('cache:clear');
 
         // Super Admin
