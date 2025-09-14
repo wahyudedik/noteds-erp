@@ -15,7 +15,12 @@ return new class extends Migration
     {
         if (Schema::hasTable('customers') && !Schema::hasColumn('customers', 'credit_note_balance')) {
             Schema::table('customers', function (Blueprint $table) {
-                $table->string('credit_note_balance')->after('balance')->default('0.00');
+                // Check if balance column exists, if yes add after it, otherwise add at the end
+                if (Schema::hasColumn('customers', 'balance')) {
+                    $table->string('credit_note_balance')->after('balance')->default('0.00');
+                } else {
+                    $table->string('credit_note_balance')->default('0.00');
+                }
             });
         }
     }
@@ -27,8 +32,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('customers', function (Blueprint $table) {
-
-        });
+        if (Schema::hasTable('customers') && Schema::hasColumn('customers', 'credit_note_balance')) {
+            Schema::table('customers', function (Blueprint $table) {
+                $table->dropColumn('credit_note_balance');
+            });
+        }
     }
 };
