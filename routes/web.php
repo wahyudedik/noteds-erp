@@ -362,9 +362,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('request-amount/{id}/{status}', [ReferralProgramController::class, 'requestedAmount'])->name('amount.request');
 
     // language import & export
-    Route::get('export/lang/json',[LanguageController::class,'exportLangJson'])->name('export.lang.json');
-    Route::get('import/lang/json/upload',[LanguageController::class,'importLangJsonUpload'])->name('import.lang.json.upload');
-    Route::post('import/lang/json',[LanguageController::class,'importLangJson'])->name('import.lang.json');
+    Route::get('export/lang/json', [LanguageController::class, 'exportLangJson'])->name('export.lang.json');
+    Route::get('import/lang/json/upload', [LanguageController::class, 'importLangJsonUpload'])->name('import.lang.json.upload');
+    Route::post('import/lang/json', [LanguageController::class, 'importLangJson'])->name('import.lang.json');
 });
 Route::get('module/reset', [ModuleController::class, 'ModuleReset'])->name('module.reset');
 Route::post('guest/module/selection', [ModuleController::class, 'GuestModuleSelection'])->name('guest.module.selection');
@@ -372,16 +372,16 @@ Route::post('guest/module/selection', [ModuleController::class, 'GuestModuleSele
 // cookie
 Route::get('cookie/consent', [SuperAdminSettingsController::class, 'CookieConsent'])->name('cookie.consent');
 
-// cache
+// cache - DIPROTEKSI dengan middleware super admin
 Route::get('/config-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('route:clear');
     Artisan::call('view:clear');
     Artisan::call('optimize:clear');
     return redirect()->back()->with('success', 'Cache Clear Successfully');
-})->name('config.cache');
+})->name('config.cache')->middleware(['auth', 'verified']);
 
-// Optimize
+// Optimize - DIPROTEKSI dengan middleware super admin
 Route::post('site/optimize', function () {
     Artisan::call('cache:clear');
     Artisan::call('route:clear');
@@ -389,7 +389,7 @@ Route::post('site/optimize', function () {
     Artisan::call('optimize:clear');
     Artisan::call('optimize');
     return redirect()->back()->with('success', 'Site Optimized Successfully');
-})->name('site.optimize');
+})->name('site.optimize')->middleware(['auth', 'verified']);
 
 //helpdesk
 Route::post('helpdesk-ticket/{id}', [HelpdeskTicketController::class, 'reply'])->name('helpdesk-ticket.reply');
@@ -413,23 +413,4 @@ Route::get('purchases/pdf/{id}', [PurchaseController::class, 'purchase'])->name(
 //instgram & facebook webhook call
 Route::any('/meta/callback', [MetaController::class, 'handleWebhook'])->name('meta.callback')->withoutMiddleware([VerifyCsrfToken::class]);
 
-Route::get('composer/json',function(){
-    $path = base_path('packages/workdo');
-    $modules = \Illuminate\Support\Facades\File::directories($path);
-
-    $moduleNames = array_map(function($dir) {
-        return basename($dir);
-    }, $modules);
-
-    $require = '';
-    $repo = '';
-    foreach($moduleNames as $module){
-        $packageName = preg_replace('/([a-z])([A-Z])/', '$1-$2', $module);
-        $require .= '"workdo/'.strtolower($packageName).'": "dev-testing",';
-        $repo .= '{
-            "type": "path",
-            "url": "packages/workdo/'.$module.'"
-        },';
-    }
-    return $require . '<br><br><br>' . $repo;
-});
+// Route composer/json dihapus untuk keamanan - mengekspos informasi sensitif

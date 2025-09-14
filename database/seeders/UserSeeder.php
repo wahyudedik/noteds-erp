@@ -22,33 +22,32 @@ class UserSeeder extends Seeder
     public function run()
     {
         // Super Admin
-        $admin = User::where('type','super admin')->first();
+        $admin = User::where('type', 'super admin')->first();
 
         // Company
-        $user = User::where('type','company')->first();
-        if(empty($user))
-        {
+        $user = User::where('type', 'company')->first();
+        if (empty($user)) {
             $company = new User();
             $company->name = 'WorkDo';
             $company->email = 'company@example.com';
-            $company->password = Hash::make('1234');
+            $company->password = Hash::make(env('COMPANY_DEFAULT_PASSWORD', 'SecurePassword123!@#'));
             $company->email_verified_at = date('Y-m-d H:i:s');
             $company->type = 'company';
             $company->active_status = 1;
             $company->active_workspace = 1;
-            $company->avatar = 'uploads/users-avatar/avatar.png';
+            $company->avatar = 'storage/users-avatar/avatar.png';
             $company->dark_mode = 0;
             $company->lang = 'en';
-            $company->referral_code = rand(100000 , 999999);
+            $company->referral_code = rand(100000, 999999);
             $company->workspace_id = 1;
             $company->created_by = $admin->id;
             $company->save();
 
 
-            $role_r = Role::where('name','company')->first();
+            $role_r = Role::where('name', 'company')->first();
             $company->addRole($role_r);
 
-            $data= $company->MakeRole();
+            $data = $company->MakeRole();
 
             // create  WorkSpace
             $workspace = new WorkSpace();

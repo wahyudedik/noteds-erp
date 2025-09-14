@@ -11,8 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if(!Schema::hasTable('users'))
-        {
+        if (!Schema::hasTable('users')) {
             Schema::create('users', function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->string('name');
@@ -24,7 +23,7 @@ return new class extends Migration
                 $table->string('type')->default('company');
                 $table->boolean('active_status')->default(false);
                 $table->integer('active_workspace')->default(0);
-                $table->string('avatar')->default('uploads/users-avatar/avatar.png');
+                $table->string('avatar')->default('storage/users-avatar/avatar.png');
                 $table->integer('requested_plan')->default(0);
                 $table->boolean('dark_mode')->default(false);
                 $table->string('lang', 191)->default('en');

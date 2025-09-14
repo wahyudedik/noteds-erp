@@ -12,7 +12,7 @@
         ? $company_settings['favicon']
         : (isset($admin_settings['favicon'])
             ? $admin_settings['favicon']
-            : 'uploads/logo/favicon.png');
+            : 'storage/logo/favicon.png');
     $logo_dark = isset($company_settings['logo_dark'])
         ? $company_settings['logo_dark']
         : (isset($admin_settings['logo_dark'])
@@ -69,7 +69,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="icon"
-        href="{{ get_file(isset($company_settings['favicon']) ? $company_settings['favicon'] : (isset($admin_settings['favicon']) ? $admin_settings['favicon'] : 'uploads/logo/favicon.png')) }}"
+        href="{{ get_file(isset($company_settings['favicon']) ? $company_settings['favicon'] : (isset($admin_settings['favicon']) ? $admin_settings['favicon'] : 'storage/logo/favicon.png')) }}"
         type="image/x-icon" />
 
     <!-- CSS Libraries -->
@@ -103,7 +103,9 @@
         <link rel="stylesheet" href="{{ asset('css/custom-auth-dark.css') }}" id="main-style-link">
     @endif
 
-    @if ($rtl != 'on' && (isset($company_settings['cust_darklayout']) ? $company_settings['cust_darklayout'] : 'off') != 'on')
+    @if (
+        $rtl != 'on' &&
+            (isset($company_settings['cust_darklayout']) ? $company_settings['cust_darklayout'] : 'off') != 'on')
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" id="main-style-link">
     @endif
 

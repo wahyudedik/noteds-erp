@@ -723,7 +723,7 @@ if (!function_exists('upload_file')) {
                     } elseif ($storage_settings['storage_setting'] == 's3') {
                         $url = $save;
                     } else {
-                        $url = 'uploads/' . $save;
+                        $url = 'storage/' . $save;
                     }
                     $res = [
                         'flag' => 1,
@@ -831,7 +831,7 @@ if (!function_exists('multi_upload_file')) {
                     } elseif ($storage_settings['storage_setting'] == 's3') {
                         $url = $save;
                     } else {
-                        $url = 'uploads/' . $save;
+                        $url = 'storage/' . $save;
                     }
                     $res = [
                         'flag' => 1,
@@ -867,6 +867,10 @@ if (!function_exists('check_file')) {
 
             if ($storage_settings['storage_setting'] == null || $storage_settings['storage_setting'] == 'local') {
 
+                // Check if file exists in public directory (for web access)
+                if (strpos($path, 'storage/') === 0) {
+                    return file_exists(public_path($path));
+                }
                 return file_exists(base_path($path));
             } else {
 
@@ -1414,17 +1418,17 @@ if (!function_exists('sidebar_logo')) {
                     if (check_file($company_settings['logo_light'])) {
                         return $company_settings['logo_light'];
                     } else {
-                        return 'uploads/logo/logo_light.png';
+                        return 'storage/logo/logo_light.png';
                     }
                 } else {
                     if (!empty($admin_settings['logo_light'])) {
                         if (check_file($admin_settings['logo_light'])) {
                             return $admin_settings['logo_light'];
                         } else {
-                            return 'uploads/logo/logo_light.png';
+                            return 'storage/logo/logo_light.png';
                         }
                     } else {
-                        return 'uploads/logo/logo_light.png';
+                        return 'storage/logo/logo_light.png';
                     }
                 }
             } else {
@@ -1432,17 +1436,17 @@ if (!function_exists('sidebar_logo')) {
                     if (check_file($company_settings['logo_dark'])) {
                         return $company_settings['logo_dark'];
                     } else {
-                        return 'uploads/logo/logo_dark.png';
+                        return 'storage/logo/logo_dark.png';
                     }
                 } else {
                     if (!empty($admin_settings['logo_dark'])) {
                         if (check_file($admin_settings['logo_dark'])) {
                             return $admin_settings['logo_dark'];
                         } else {
-                            return 'uploads/logo/logo_dark.png';
+                            return 'storage/logo/logo_dark.png';
                         }
                     } else {
-                        return 'uploads/logo/logo_dark.png';
+                        return 'storage/logo/logo_dark.png';
                     }
                 }
             }
@@ -1452,7 +1456,7 @@ if (!function_exists('sidebar_logo')) {
                     if (check_file($admin_settings['logo_light'])) {
                         return $admin_settings['logo_light'];
                     } else {
-                        return 'uploads/logo/logo_light.png';
+                        return 'storage/logo/logo_light.png';
                     }
                 } else {
                     return 'uploads/logo/logo_light.png';
@@ -1462,10 +1466,10 @@ if (!function_exists('sidebar_logo')) {
                     if (check_file($admin_settings['logo_dark'])) {
                         return $admin_settings['logo_dark'];
                     } else {
-                        return 'uploads/logo/logo_dark.png';
+                        return 'storage/logo/logo_dark.png';
                     }
                 } else {
-                    return 'uploads/logo/logo_dark.png';
+                    return 'storage/logo/logo_dark.png';
                 }
             }
         }
@@ -1477,15 +1481,15 @@ if (!function_exists('light_logo')) {
     {
         if (\Auth::check()) {
             $company_settings = getCompanyAllSetting();
-            $logo_light = isset($company_settings['logo_light']) ? $company_settings['logo_light'] : 'uploads/logo/logo_light.png';
+            $logo_light = isset($company_settings['logo_light']) ? $company_settings['logo_light'] : 'storage/logo/logo_light.png';
         } else {
             $admin_settings = getAdminAllSetting();
-            $logo_light = isset($admin_settings['logo_light']) ? $admin_settings['logo_light'] : 'uploads/logo/logo_light.png';
+            $logo_light = isset($admin_settings['logo_light']) ? $admin_settings['logo_light'] : 'storage/logo/logo_light.png';
         }
         if (check_file($logo_light)) {
             return $logo_light;
         } else {
-            return 'uploads/logo/logo_dark.png';
+            return 'storage/logo/logo_dark.png';
         }
     }
 }
@@ -1495,15 +1499,15 @@ if (!function_exists('dark_logo')) {
     {
         if (\Auth::check()) {
             $company_settings = getCompanyAllSetting();
-            $logo_dark = isset($company_settings['logo_dark']) ? $company_settings['logo_dark'] : 'uploads/logo/logo_dark.png';
+            $logo_dark = isset($company_settings['logo_dark']) ? $company_settings['logo_dark'] : 'storage/logo/logo_dark.png';
         } else {
             $admin_settings = getAdminAllSetting();
-            $logo_dark = isset($admin_settings['logo_dark']) ? $admin_settings['logo_dark'] : 'uploads/logo/logo_dark.png';
+            $logo_dark = isset($admin_settings['logo_dark']) ? $admin_settings['logo_dark'] : 'storage/logo/logo_dark.png';
         }
         if (check_file($logo_dark)) {
             return $logo_dark;
         } else {
-            return 'uploads/logo/logo_dark.png';
+            return 'storage/logo/logo_dark.png';
         }
     }
 }
