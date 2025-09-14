@@ -865,7 +865,7 @@ if (!function_exists('check_file')) {
 
             $storage_settings = getAdminAllSetting();
 
-            if ($storage_settings['storage_setting'] == null || $storage_settings['storage_setting'] == 'local') {
+            if (!isset($storage_settings['storage_setting']) || $storage_settings['storage_setting'] == null || $storage_settings['storage_setting'] == 'local') {
 
                 // Check if file exists in public directory (for web access)
                 if (strpos($path, 'storage/') === 0) {
